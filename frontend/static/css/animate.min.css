@@ -1,0 +1,38 @@
+/* frontend/static/css/animate.min.css */
+/* Animate.css - Version minimale pour la démonstration */
+/* Pour la version complète, téléchargez depuis https://animate.style/ */
+.animate__animated {
+  animation-duration: 1s;
+  animation-fill-mode: both;
+}
+
+.animate__fadeInDown {
+  animation-name: fadeInDown;
+}
+
+.animate__flipInX {
+  animation-name: flipInX;
+}
+
+/* Keyframes minimaux */
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translate3d(0, -100%, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes flipInX {
+  from {
+    transform: perspective(400px) rotateX(90deg);
+    opacity: 0;
+  }
+  to {
+    transform: perspective(400px) rotateX(0deg);
+    opacity: 1;
+  }
+}

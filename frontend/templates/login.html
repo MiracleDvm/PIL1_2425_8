@@ -1,0 +1,21 @@
+<!-- frontend/templates/login.html -->
+{% extends "base.html" %}
+{% block title %}Connexion{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+   <div class="col-md-6 bg-white p-4 rounded shadow-sm">
+       <h2>Connexion</h2>
+       <form method="POST" action="{{ url_for('main.login') }}">
+           <div class="mb-3">
+               <label for="email" class="form-label">Email</label>
+               <input type="email" class="form-control" id="email" name="email" required>
+           </div>
+           <div class="mb-3">
+               <label for="mot_de_passe" class="form-label">Mot de passe</label>
+               <input type="password" class="form-control" id="mot_de_passe" name="mot_de_passe" required>
+           </div>
+           <button type="submit" class="btn btn-primary">Se connecter</button>
+       </form>
+   </div>
+</div>
+{% endblock %}

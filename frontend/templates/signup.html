@@ -1,0 +1,52 @@
+<!-- frontend/templates/signup.html -->
+{% extends "base.html" %}
+{% block title %}Inscription{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+   <div class="col-md-6 bg-white p-4 rounded shadow-sm">
+       <h2>Inscription</h2>
+       <form method="POST" action="{{ url_for('main.inscription') }}">
+           <div class="mb-3">
+               <label for="nom" class="form-label">Nom</label>
+               <input type="text" class="form-control" id="nom" name="nom" required>
+           </div>
+           <div class="mb-3">
+               <label for="prenom" class="form-label">Prénom</label>
+               <input type="text" class="form-control" id="prenom" name="prenom" required>
+           </div>
+           <div class="mb-3">
+               <label for="telephone" class="form-label">Téléphone</label>
+               <input type="text" class="form-control" id="telephone" name="telephone" required>
+           </div>
+           <div class="mb-3">
+               <label for="email" class="form-label">Email</label>
+               <input type="email" class="form-control" id="email" name="email" required>
+           </div>
+           <div class="mb-3">
+               <label for="mot_de_passe" class="form-label">Mot de passe</label>
+               <input type="password" class="form-control" id="mot_de_passe" name="mot_de_passe" required>
+           </div>
+           <div class="mb-3">
+               <label for="role" class="form-label">Rôle</label>
+               <select class="form-select" id="role" name="role">
+                   <option value="passager" selected>Passager</option>
+                   <option value="conducteur">Conducteur</option>
+               </select>
+           </div>
+           <div class="mb-3">
+               <label for="point_depart" class="form-label">Point de départ habituel</label>
+               <input type="text" class="form-control" id="point_depart" name="point_depart">
+           </div>
+           <div class="mb-3">
+               <label for="horaires" class="form-label">Horaires (format HH:MM)</label>
+               <input type="text" class="form-control" id="horaires" name="horaires">
+           </div>
+           <div class="mb-3">
+               <label for="photo" class="form-label">URL de la photo de profil</label>
+               <input type="text" class="form-control" id="photo" name="photo">
+           </div>
+           <button type="submit" class="btn btn-primary">S'inscrire</button>
+       </form>
+   </div>
+</div>
+{% endblock %}

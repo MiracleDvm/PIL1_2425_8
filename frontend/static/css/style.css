@@ -1,0 +1,150 @@
+/* frontend/static/css/style.css */
+body {
+    background: linear-gradient(135deg, #e0e7ff 0%, #b6d4fe 50%, #f8fafc 100%);
+    /* Couleurs inspirées du logo : bleu clair, bleu vif, blanc */
+}
+
+header h1 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #0d6efd !important;
+    text-shadow: 1px 1px 8px #b6d4fe;
+}
+
+.navbar a.nav-link {
+    font-size: 1.1rem;
+    color: #0d6efd !important;
+    background: linear-gradient(90deg, #e0e7ff 0%, #f8fafc 100%);
+    border-radius: 8px;
+    margin: 0 6px;
+    padding: 8px 18px;
+    box-shadow: 0 2px 8px rgba(13,110,253,0.08);
+    transition: 
+        color 0.25s cubic-bezier(.4,0,.2,1),
+        background 0.4s cubic-bezier(.4,0,.2,1),
+        box-shadow 0.4s cubic-bezier(.4,0,.2,1),
+        transform 0.2s cubic-bezier(.4,0,.2,1);
+    position: relative;
+    overflow: hidden;
+}
+
+.navbar a.nav-link::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 0;
+    height: 0;
+    background: radial-gradient(circle, #b6d4fe 0%, #0d6efd33 100%);
+    opacity: 0.5;
+    border-radius: 50%;
+    transform: translate(-50%, -50%) scale(0.2);
+    transition: width 0.4s, height 0.4s, opacity 0.4s, transform 0.4s;
+    z-index: 0;
+}
+
+.navbar a.nav-link:hover::before {
+    width: 180%;
+    height: 400%;
+    opacity: 0.15;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.navbar a.nav-link:hover {
+    color: #fff !important;
+    background: linear-gradient(90deg, #0d6efd 0%, #6610f2 100%);
+    box-shadow: 0 4px 16px rgba(13,110,253,0.18), 0 1.5px 8px #6610f233;
+    transform: translateY(-2px) scale(1.06) rotate(-1deg);
+    text-decoration: none;
+}
+
+.navbar a.nav-link:active {
+    background: linear-gradient(90deg, #6610f2 0%, #0d6efd 100%);
+    color: #fff !important;
+    box-shadow: 0 2px 8px #0d6efd55;
+    transform: scale(0.98);
+}
+
+.navbar a.nav-link {
+    z-index: 1;
+}
+
+@media (max-width: 600px) {
+    .navbar a.nav-link {
+        font-size: 1rem;
+        padding: 7px 10px;
+    }
+}
+
+.alert {
+    margin-top: 1rem;
+}
+
+/* Zone de chat */
+#chat-window {
+    background: linear-gradient(135deg, #e0e7ff 0%, #b6d4fe 100%) !important;
+    border-radius: 10px;
+    padding: 16px;
+    min-height: 200px;
+    box-shadow: 0 2px 12px rgba(13,110,253,0.10);
+    transition: background 0.3s;
+    border: 2px solid #0d6efd22;
+}
+
+#chat-window div {
+    animation: fadeIn 0.5s, popIn 0.3s;
+    margin-bottom: 8px;
+    padding: 8px 14px;
+    border-radius: 8px;
+    background: #fff;
+    box-shadow: 0 1px 4px #b6d4fe55;
+    position: relative;
+    transition: background 0.2s, box-shadow 0.2s;
+}
+
+#chat-window div.own-message {
+    background: linear-gradient(90deg, #0d6efd 0%, #b6d4fe 100%);
+    color: #fff;
+    align-self: flex-end;
+    box-shadow: 0 2px 8px #0d6efd33;
+}
+
+#chat-window div.notification {
+    background: #e0e7ff;
+    color: #0d6efd;
+    font-style: italic;
+    text-align: center;
+    box-shadow: none;
+    padding: 6px 10px;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: none; }
+}
+
+@keyframes popIn {
+    0% { transform: scale(0.8); }
+    100% { transform: scale(1); }
+}
+
+.btn-primary {
+    background-color: #0d6efd !important;
+    border-color: #0d6efd !important;
+    transition: background 0.2s, border 0.2s;
+}
+
+.btn-primary:hover {
+    background-color: #6610f2 !important;
+    border-color: #6610f2 !important;
+}
+
+#chat-form .btn-primary {
+    background: linear-gradient(90deg, #0d6efd 0%, #6610f2 100%) !important;
+    border: none;
+    box-shadow: 0 2px 8px #0d6efd33;
+}
+
+#chat-form .btn-primary:active {
+    background: #0d6efd !important;
+}

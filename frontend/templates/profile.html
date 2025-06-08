@@ -1,0 +1,46 @@
+<!-- frontend/templates/profile.html -->
+{% extends "base.html" %}
+{% block title %}Profil{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+   <div class="col-md-6 bg-white p-4 rounded shadow-sm">
+       <h2>Votre Profil</h2>
+       {% if user %}
+       <form method="POST" action="{{ url_for('main.profile') }}">
+           <input type="hidden" name="access_token" value="{{ token if token is defined else '' }}">
+           <div class="mb-3">
+               <label for="nom" class="form-label">Nom</label>
+               <input type="text" class="form-control" id="nom" name="nom" value="{{ user.nom or '' }}" required>
+           </div>
+           <div class="mb-3">
+               <label for="prenom" class="form-label">Prénom</label>
+               <input type="text" class="form-control" id="prenom" name="prenom" value="{{ user.prenom or '' }}" required>
+           </div>
+           <div class="mb-3">
+               <label for="telephone" class="form-label">Téléphone</label>
+               <input type="text" class="form-control" id="telephone" name="telephone" value="{{ user.telephone or '' }}" required>
+           </div>
+           <div class="mb-3">
+               <label for="email" class="form-label">Email</label>
+               <input type="email" class="form-control" id="email" name="email" value="{{ user.email or '' }}" required>
+           </div>
+           <div class="mb-3">
+               <label for="point_depart" class="form-label">Point de départ habituel</label>
+               <input type="text" class="form-control" id="point_depart" name="point_depart" value="{{ user.point_depart or '' }}">
+           </div>
+           <div class="mb-3">
+               <label for="horaires" class="form-label">Horaires</label>
+               <input type="text" class="form-control" id="horaires" name="horaires" value="{{ user.horaires or '' }}">
+           </div>
+           <div class="mb-3">
+               <label for="photo" class="form-label">URL de la photo de profil</label>
+               <input type="text" class="form-control" id="photo" name="photo" value="{{ user.photo or '' }}">
+           </div>
+           <button type="submit" class="btn btn-primary">Mettre à jour</button>
+       </form>
+       {% else %}
+         <div class="alert alert-danger">Utilisateur non trouvé ou non connecté.</div>
+       {% endif %}
+   </div>
+</div>
+{% endblock %}
