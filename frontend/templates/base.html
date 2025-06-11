@@ -1,91 +1,606 @@
-<!-- frontend/templates/base.html -->
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-   <meta charset="UTF-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>RoadOnIFRI - {% block title %}{% endblock %}</title>
-   <!-- Bootstrap CSS -->
-    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/car_logo.png') }}">
-   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-   <!-- Animate.css -->
-   <link rel="stylesheet" href="{{ url_for('static', filename='css/animate.min.css') }}">
-   <!-- Custom CSS -->
-   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-   <!-- Bootstrap Icons -->
-   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RoadOnIFRI - Partagez vos trajets, économisez ensemble</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <style>
+        :root {
+            --primary-color: #007bff;
+            --secondary-color: #6c757d;
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --danger-color: #dc3545;
+            --light-color: #f8f9fa;
+            --dark-color: #343a40;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .hero-section {
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), 
+                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><rect fill="%23667eea" width="1200" height="600"/><path fill="%23764ba2" d="M0 400L50 383.3C100 366.7 200 333.3 300 316.7C400 300 500 300 600 316.7C700 333.3 800 366.7 900 383.3C1000 400 1100 400 1150 400L1200 400V600H1150C1100 600 1000 600 900 600C800 600 700 600 600 600C500 600 400 600 300 600C200 600 100 600 50 600H0V400Z"/></svg>');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 100px 0;
+            text-align: center;
+        }
+
+        .feature-card {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 1rem 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            height: 100%;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .btn-custom {
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            border: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary-custom {
+            background: linear-gradient(45deg, #007bff, #0056b3);
+            color: white;
+        }
+
+        .btn-primary-custom:hover {
+            background: linear-gradient(45deg, #0056b3, #004085);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0,123,255,0.3);
+        }
+
+        .btn-outline-custom {
+            background: transparent;
+            border: 2px solid white;
+            color: white;
+        }
+
+        .btn-outline-custom:hover {
+            background: white;
+            color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        .stats-section {
+            background: var(--light-color);
+            padding: 60px 0;
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 2rem;
+            border-radius: 15px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: left 0.5s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-10px) scale(1.05);
+            background: white;
+            box-shadow: 0 20px 40px rgba(0,123,255,0.15);
+        }
+
+        .stat-card:hover::before {
+            left: 100%;
+        }
+
+        .stat-card:hover .stat-number {
+            transform: scale(1.2);
+            text-shadow: 0 0 20px rgba(0,123,255,0.3);
+        }
+
+        .stat-card:hover .stat-icon {
+            transform: rotate(360deg) scale(1.1);
+            color: var(--success-color);
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            transition: all 0.3s ease;
+            display: block;
+        }
+
+        .stat-icon {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: block;
+        }
+
+        .how-it-works {
+            padding: 80px 0;
+            background: white;
+        }
+
+        .step-card {
+            text-align: center;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .step-number {
+            width: 60px;
+            height: 60px;
+            background: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 0 auto 1rem;
+        }
+
+        .cta-section {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+            padding: 80px 0;
+            text-align: center;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 2rem;
+        }
+
+        .logo-icon {
+            width: 80px;
+            height: 80px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            overflow: hidden;
+        }
+
+        .logo-icon img {
+            width: 50px;
+            height: 50px;
+            object-fit: contain;
+        }
+
+        .students-image {
+            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), 
+                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400"><rect fill="%23f8f9fa" width="800" height="400"/><g fill="%23007bff" opacity="0.1"><circle cx="150" cy="150" r="80"/><circle cx="350" cy="180" r="60"/><circle cx="550" cy="140" r="70"/><circle cx="650" cy="200" r="50"/></g><g fill="%23007bff" opacity="0.3"><rect x="100" y="250" width="200" height="80" rx="40"/><rect x="350" y="280" width="150" height="60" rx="30"/><rect x="550" y="260" width="180" height="70" rx="35"/></g><g fill="%2328a745" opacity="0.2"><polygon points="200,100 250,150 200,200 150,150"/><polygon points="450,120 500,170 450,220 400,170"/><polygon points="600,90 650,140 600,190 550,140"/></g><text x="400" y="350" text-anchor="middle" fill="%23007bff" font-size="24" font-weight="bold">Étudiants IFRI en Covoiturage</text></svg>');
+            background-size: cover;
+            background-position: center;
+            border-radius: 15px;
+            padding: 3rem;
+            margin: 2rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .students-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(0,123,255,0.1), rgba(40,167,69,0.1));
+            border-radius: 15px;
+        }
+
+        .floating-elements {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .floating-car {
+            position: absolute;
+            font-size: 2rem;
+            color: rgba(255,255,255,0.1);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(10deg); }
+        }
+
+        .floating-car:nth-child(1) { top: 10%; left: 10%; animation-delay: 0s; }
+        .floating-car:nth-child(2) { top: 20%; right: 15%; animation-delay: 2s; }
+        .floating-car:nth-child(3) { bottom: 30%; left: 20%; animation-delay: 4s; }
+        .floating-car:nth-child(4) { bottom: 20%; right: 10%; animation-delay: 1s; }
+
+        @media (max-width: 768px) {
+            .hero-section {
+                padding: 60px 0;
+            }
+            
+            .btn-custom {
+                width: 100%;
+                margin: 0.5rem 0;
+            }
+        }
+    </style>
 </head>
 <body>
-   <!-- En-tête -->
-   <header class="py-4 mb-4 text-center">
-       <img src="{{ url_for('static', filename='images/car_logo.png') }}" alt="Logo RoadOnIFRI" height="60" class="animate__animated animate__fadeInDown">
-       <h1 class="mt-3 animate__animated animate__flipInX">RoadOnIFRI</h1>
-       <p class="lead">Partagez vos trajets, économisez ensemble</p>
-   </header>
+    <!-- Section Hero -->
+    <section class="hero-section position-relative">
+        <div class="floating-elements">
+            <div class="floating-car">🚗</div>
+            <div class="floating-car">🚙</div>
+            <div class="floating-car">🚐</div>
+            <div class="floating-car">🛣️</div>
+        </div>
+        
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="logo-container animate__animated animate__fadeInDown">
+                        <div class="logo-icon">
+                            <img src="{{ url_for('static', filename='images/car_logo.png') }}" alt="Logo RoadOnIFRI">
+                        </div>
+                        <h1 class="display-4 fw-bold mb-0">RoadOnIFRI</h1>
+                    </div>
+                    
+                    <div class="students-image animate__animated animate__fadeInUp animate__delay-1s">
+                        <div class="row align-items-center">
+                            <div class="col-md-8">
+                                <p class="lead mb-4 text-white">
+                                    La plateforme de covoiturage intelligente qui connecte les étudiants et le personnel de l'IFRI
+                                </p>
+                                
+                                <h2 class="h4 mb-4 text-white">
+                                    🌟 Partagez vos trajets, économisez ensemble, protégez l'environnement
+                                </h2>
+                            </div>
+                            <div class="col-md-4 text-center">
+                                <div style="font-size: 8rem; opacity: 0.3;">
+                                    🚗👥🎓
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex flex-column flex-md-row justify-content-center gap-3 animate__animated animate__fadeInUp animate__delay-2s">
+                        <a href="{{ url_for('main.inscription') }}" class="btn btn-primary-custom btn-custom">
+                            <i class="bi bi-person-plus me-2"></i>
+                            Rejoindre maintenant
+                        </a>
+                        <a href="{{ url_for('main.login') }}" class="btn btn-outline-custom btn-custom">
+                            <i class="bi bi-box-arrow-in-right me-2"></i>
+                            Se connecter
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-   <div class="container">
-       {% with messages = get_flashed_messages(with_categories=true) %}
-         {% if messages %}
-           {% for category, message in messages %}
-             <div class="alert alert-{{ category }} alert-dismissible fade show d-flex align-items-center gap-2" role="alert">
-               {% if category == 'danger' or category == 'error' %}
-                 <span class="me-2"><i class="bi bi-exclamation-triangle-fill text-danger"></i></span>
-                 <strong>Erreur :</strong>
-               {% elif category == 'success' %}
-                 <span class="me-2"><i class="bi bi-check-circle-fill text-success"></i></span>
-                 <strong>Succès :</strong>
-               {% elif category == 'warning' %}
-                 <span class="me-2"><i class="bi bi-exclamation-circle-fill text-warning"></i></span>
-                 <strong>Attention :</strong>
-               {% elif category == 'info' %}
-                 <span class="me-2"><i class="bi bi-info-circle-fill text-info"></i></span>
-                 <strong>Info :</strong>
-               {% endif %}
-               {{ message }}
-               <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-             </div>
-           {% endfor %}
-         {% endif %}
-       {% endwith %}
-       {% block content %}{% endblock %}
-   </div>
+    <!-- Section Statistiques -->
+    <section class="stats-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3 col-sm-6">
+                    <div class="stat-card animate__animated animate__fadeInUp">
+                        <i class="stat-icon bi bi-people-fill"></i>
+                        <div class="stat-number">500+</div>
+                        <p class="mb-0 text-muted fw-bold">Utilisateurs actifs</p>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <div class="stat-card animate__animated animate__fadeInUp animate__delay-1s">
+                        <i class="stat-icon bi bi-car-front-fill"></i>
+                        <div class="stat-number">1,200+</div>
+                        <p class="mb-0 text-muted fw-bold">Trajets partagés</p>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <div class="stat-card animate__animated animate__fadeInUp animate__delay-2s">
+                        <i class="stat-icon bi bi-piggy-bank-fill"></i>
+                        <div class="stat-number">₣ 50,000</div>
+                        <p class="mb-0 text-muted fw-bold">Économies réalisées</p>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <div class="stat-card animate__animated animate__fadeInUp animate__delay-3s">
+                        <i class="stat-icon bi bi-tree-fill"></i>
+                        <div class="stat-number">2.5T</div>
+                        <p class="mb-0 text-muted fw-bold">CO₂ évité</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-   <!-- Barre de navigation fixe -->
-   <nav class="navbar fixed-bottom navbar-light bg-light">
-       <div class="container-fluid d-flex justify-content-around">
-           {% if user %}
-               <a class="nav-link" href="{{ url_for('main.match') }}">Recherche</a>
-               <a class="nav-link" href="{{ url_for('main.messages') }}">Messagerie</a>
-               <a class="nav-link" href="{{ url_for('main.profile') }}">Profil</a>
-           {% else %}
-               <a class="nav-link" href="{{ url_for('main.inscription') }}">Inscription</a>
-               <a class="nav-link" href="{{ url_for('main.login') }}">Connexion</a>
-           {% endif %}
-       </div>
-   </nav>
+    <!-- Section Fonctionnalités -->
+    <section class="py-5">
+        <div class="container">
+            <div class="row justify-content-center mb-5">
+                <div class="col-lg-8 text-center">
+                    <h2 class="display-5 fw-bold mb-4">Pourquoi choisir RoadOnIFRI ?</h2>
+                    <p class="lead text-muted">Une solution complète pour tous vos besoins de transport</p>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-card animate__animated animate__fadeInUp">
+                        <div class="feature-icon">
+                            <i class="bi bi-geo-alt-fill"></i>
+                        </div>
+                        <h4 class="fw-bold mb-3">Trajets intelligents</h4>
+                        <p class="text-muted">Algorithme de matching avancé qui trouve les trajets les plus compatibles selon vos horaires et destinations.</p>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-card animate__animated animate__fadeInUp animate__delay-1s">
+                        <div class="feature-icon">
+                            <i class="bi bi-shield-check"></i>
+                        </div>
+                        <h4 class="fw-bold mb-3">Sécurité garantie</h4>
+                        <p class="text-muted">Vérification d'identité, système de notation et messagerie sécurisée pour des trajets en toute confiance.</p>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-card animate__animated animate__fadeInUp animate__delay-2s">
+                        <div class="feature-icon">
+                            <i class="bi bi-wallet2"></i>
+                        </div>
+                        <h4 class="fw-bold mb-3">Économies réelles</h4>
+                        <p class="text-muted">Réduisez vos frais de transport jusqu'à 70% en partageant les coûts avec d'autres passagers.</p>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-card animate__animated animate__fadeInUp animate__delay-3s">
+                        <div class="feature-icon">
+                            <i class="bi bi-chat-dots"></i>
+                        </div>
+                        <h4 class="fw-bold mb-3">Communication facile</h4>
+                        <p class="text-muted">Messagerie intégrée en temps réel pour coordonner vos trajets et rester en contact.</p>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-card animate__animated animate__fadeInUp animate__delay-4s">
+                        <div class="feature-icon">
+                            <i class="bi bi-leaf"></i>
+                        </div>
+                        <h4 class="fw-bold mb-3">Impact écologique</h4>
+                        <p class="text-muted">Contribuez à la réduction des émissions de CO₂ et à la protection de l'environnement.</p>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-card animate__animated animate__fadeInUp animate__delay-5s">
+                        <div class="feature-icon">
+                            <i class="bi bi-people"></i>
+                        </div>
+                        <h4 class="fw-bold mb-3">Communauté IFRI</h4>
+                        <p class="text-muted">Connectez-vous exclusivement avec des membres de la communauté IFRI pour plus de sécurité.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-   <!-- Bootstrap JS Bundle -->
-   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-   <!-- Socket.IO -->
-   <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
-   <!-- Custom JS -->
-   <script src="{{ url_for('static', filename='js/main.js') }}"></script>
-   <script>
-     // Disparition automatique des alertes Bootstrap après 3 secondes
-     document.addEventListener('DOMContentLoaded', function() {
-       const alerts = document.querySelectorAll('.alert');
-       alerts.forEach(function(alert) {
-         setTimeout(function() {
-           // Utilise la méthode Bootstrap pour fermer l'alerte
-           if (window.bootstrap) {
-             var bsAlert = bootstrap.Alert.getOrCreateInstance(alert);
-             bsAlert.close();
-           } else {
-             alert.classList.remove('show');
-           }
-         }, 3000);
-       });
-     });
-   </script>
+    <!-- Section Comment ça marche -->
+    <section class="how-it-works">
+        <div class="container">
+            <div class="row justify-content-center mb-5">
+                <div class="col-lg-8 text-center">
+                    <h2 class="display-5 fw-bold mb-4">Comment ça marche ?</h2>
+                    <p class="lead text-muted">En 3 étapes simples, commencez à partager vos trajets</p>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="step-card animate__animated animate__fadeInUp">
+                        <div class="step-number">1</div>
+                        <div class="mb-3">
+                            <i class="bi bi-person-plus-fill text-primary" style="font-size: 3rem;"></i>
+                        </div>
+                        <h4 class="fw-bold mb-3">Inscrivez-vous</h4>
+                        <p class="text-muted">Créez votre profil avec votre email IFRI et complétez vos informations de base.</p>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4">
+                    <div class="step-card animate__animated animate__fadeInUp animate__delay-1s">
+                        <div class="step-number">2</div>
+                        <div class="mb-3">
+                            <i class="bi bi-search text-primary" style="font-size: 3rem;"></i>
+                        </div>
+                        <h4 class="fw-bold mb-3">Trouvez ou proposez</h4>
+                        <p class="text-muted">Recherchez un trajet existant ou proposez le vôtre selon vos besoins.</p>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4">
+                    <div class="step-card animate__animated animate__fadeInUp animate__delay-2s">
+                        <div class="step-number">3</div>
+                        <div class="mb-3">
+                            <i class="bi bi-car-front-fill text-primary" style="font-size: 3rem;"></i>
+                        </div>
+                        <h4 class="fw-bold mb-3">Voyagez ensemble</h4>
+                        <p class="text-muted">Connectez-vous avec vos co-voyageurs et profitez d'un trajet économique et convivial.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Call to Action -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8 text-center">
+                    <h2 class="display-4 fw-bold mb-4 animate__animated animate__fadeInUp">
+                        Prêt à commencer votre aventure ?
+                    </h2>
+                    <p class="lead mb-5 animate__animated animate__fadeInUp animate__delay-1s">
+                        Rejoignez des centaines d'étudiants et de personnel qui économisent déjà avec RoadOnIFRI
+                    </p>
+                    <div class="d-flex flex-column flex-md-row justify-content-center gap-3 animate__animated animate__fadeInUp animate__delay-2s">
+                        <a href="{{ url_for('main.inscription') }}" class="btn btn-light btn-custom">
+                            <i class="bi bi-rocket-takeoff me-2"></i>
+                            Commencer gratuitement
+                        </a>
+                        <a href="{{ url_for('main.login') }}" class="btn btn-outline-light btn-custom">
+                            <i class="bi bi-arrow-right-circle me-2"></i>
+                            J'ai déjà un compte
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-light py-4">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <div class="d-flex align-items-center gap-2">
+                        <img src="{{ url_for('static', filename='images/car_logo.png') }}" alt="Logo" width="24" height="24">
+                        <span class="fw-bold">RoadOnIFRI</span>
+                    </div>
+                    <small class="text-muted">© 2025 RoadOnIFRI. Tous droits réservés.</small>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <div class="d-flex justify-content-md-end gap-3">
+                        <a href="#" class="text-light"><i class="bi bi-facebook"></i></a>
+                        <a href="#" class="text-light"><i class="bi bi-twitter"></i></a>
+                        <a href="#" class="text-light"><i class="bi bi-instagram"></i></a>
+                        <a href="#" class="text-light"><i class="bi bi-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Animation on scroll -->
+    <script>
+        // Animation au scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate__animated', 'animate__fadeInUp');
+                }
+            });
+        }, observerOptions);
+
+        // Observer tous les éléments avec la classe .feature-card et .step-card
+        document.querySelectorAll('.feature-card:not(.animate__animated), .step-card:not(.animate__animated)').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Effet de parallaxe léger pour les éléments flottants
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const parallax = document.querySelectorAll('.floating-car');
+            const speed = 0.5;
+
+            parallax.forEach(element => {
+                const yPos = -(scrolled * speed);
+                element.style.transform = `translateY(${yPos}px)`;
+            });
+        });
+
+        // Compteur animé pour les statistiques
+        function animateCounter(element, start, end, duration) {
+            let startTimestamp = null;
+            const step = (timestamp) => {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                const current = Math.floor(progress * (end - start) + start);
+                element.innerHTML = current.toLocaleString();
+                if (progress < 1) {
+                    window.requestAnimationFrame(step);
+                }
+            };
+            window.requestAnimationFrame(step);
+        }
+
+        // Observer pour les statistiques
+        const statsObserver = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const statNumber = entry.target.querySelector('.stat-number');
+                    const finalNumber = parseInt(statNumber.textContent.replace(/[^\d]/g, ''));
+                    animateCounter(statNumber, 0, finalNumber, 2000);
+                    statsObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        document.querySelectorAll('.stat-card').forEach(card => {
+            statsObserver.observe(card);
+        });
+    </script>
 </body>
 </html>
