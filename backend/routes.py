@@ -180,21 +180,22 @@ def login():
                 
                 flash("Connexion réussie !", "success")
                 response = make_response(redirect(url_for('main.profile')))
+                # Utiliser secure=True pour les cookies JWT en production
                 response.set_cookie(
                     'access_token_cookie', 
                     access_token, 
                     httponly=True, 
                     samesite='Strict', 
-                    secure=False,  # True en production avec HTTPS
-                    max_age=timedelta(hours=1).total_seconds()
+                    secure=True,  # Utiliser secure=True en production avec HTTPS
+                    max_age=int(timedelta(hours=1).total_seconds())
                 )
                 response.set_cookie(
                     'refresh_token_cookie', 
                     refresh_token, 
                     httponly=True, 
                     samesite='Strict', 
-                    secure=False,
-                    max_age=timedelta(days=30).total_seconds()
+                    secure=True,
+                    max_age=int(timedelta(days=30).total_seconds())
                 )
                 return response
             else:
@@ -235,7 +236,9 @@ def logout():
         revoke_token(jti)
         
         if request.is_json:
-            return jsonify({'message': 'Déconnexion réussie'}), 200
+            response = jsonify({'message': 'Déconnexion réussie'})
+            unset_jwt_cookies(response)
+            return response, 200
         
         response = make_response(redirect(url_for('main.index')))
         unset_jwt_cookies(response)
@@ -255,7 +258,15 @@ def refresh():
     """Renouvellement du token d'accès"""
     try:
         current_user_id = get_jwt_identity()
-        new_token = create_access_token(identity=current_user_id)
+        # Récupérer le rôle de l'utilisateur pour les claims
+        user = User.query.get(current_user_id)
+        if not user:
+            return jsonify({'error': 'Utilisateur introuvable'}), 404
+            
+        new_token = create_access_token(
+            identity=current_user_id,
+            additional_claims={'role': user.role}
+        )
         
         if request.is_json:
             return jsonify({'access_token': new_token}), 200
@@ -266,8 +277,8 @@ def refresh():
             new_token, 
             httponly=True, 
             samesite='Strict', 
-            secure=False,
-            max_age=timedelta(hours=1).total_seconds()
+            secure=True,
+            max_age=int(timedelta(hours=1).total_seconds())
         )
         return response
         
@@ -343,6 +354,7 @@ def profile():
                 }), 200
             
             flash("Profil mis à jour avec succès.", "success")
+            return render_template('profile.html', user=user)
             
     except ValidationError as e:
         db.session.rollback()
@@ -417,6 +429,7 @@ def trajets():
                 }), 201
             
             flash("Trajet publié avec succès.", "success")
+            return redirect(url_for('main.trajets'))
             
         except ValidationError as e:
             db.session.rollback()
